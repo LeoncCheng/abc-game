@@ -32,7 +32,7 @@ const App = () => {
     // Function to play encouragement sound using TTS (in Chinese)
     const playCorrectSoundTTS = () => {
         // Use speakText to play Chinese encouragement with a slightly higher pitch
-        speakText('太棒了！', 'zh-CN', 1, 1.2); // Text and language are set to Chinese
+        speakText('太棒了！', 'zh-CN', 1, 1.2); // Text and language is set to Chinese
     };
 
     // Function to play the pronunciation of the current letter
@@ -125,9 +125,11 @@ const App = () => {
 
     return (
         // Main container, set min-height, center alignment, background color, and font
-        <div className="min-h-screen flex items-center justify-center bg-blue-50 font-inter p-4">
-            {/* Game card container, set padding, rounded corners, shadow, text alignment, and responsive width */}
-            <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl text-center max-w-lg w-full flex flex-col items-center justify-center">
+        // Ensure it takes full screen width/height and hides overflow
+        <div className="w-screen h-screen flex items-center justify-center bg-blue-50 font-inter overflow-hidden">
+            {/* Game card container, now acting as the full-screen white background */}
+            {/* It fills its parent (w-full h-full) and has padding for content */}
+            <div className="bg-white p-16 md:p-24 lg:p-32 rounded-none shadow-none text-center w-full h-full flex flex-col items-center justify-center">
                 {gameCompleted ? (
                     // If the game is completed, display celebration message and replay button
                     <div className="flex flex-col items-center">
@@ -145,10 +147,11 @@ const App = () => {
                 ) : (
                     // If the game is not completed, display the current letter and message
                     <>
-                        <h1 className="text-9xl md:text-[12rem] font-extrabold text-blue-700 mb-6 leading-none">
+                        {/* Adjusted font size using inline style with min(vw, vh) for maximum size without overflow */}
+                        <h1 style={{ fontSize: 'min(70vw, 70vh)' }} className="font-extrabold text-blue-700 leading-none">
                             {alphabet[currentLetterIndex]} {/* Display current letter */}
                         </h1>
-                        <p className="text-xl md:text-2xl text-gray-700 min-h-[2.5rem] mb-4">
+                        <p className="text-xl md:text-2xl text-gray-700 min-h-[2.5rem] mt-4">
                             {message} {/* Display message */}
                         </p>
                     </>
