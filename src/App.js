@@ -4,6 +4,35 @@ import React, { useState, useEffect, useRef } from 'react';
 const App = () => {
     // Define the array of 26 English alphabet letters
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    // Common English words and image URLs for each letter
+    const letterData = [
+        { word: 'Apple', img: 'https://img.icons8.com/color/192/apple.png' },
+        { word: 'Ball', img: 'https://img.icons8.com/color/192/football2.png' },
+        { word: 'Cat', img: 'https://img.icons8.com/color/192/cat.png' },
+        { word: 'Dog', img: 'https://img.icons8.com/color/192/dog.png' },
+        { word: 'Elephant', img: 'https://img.icons8.com/color/192/elephant.png' },
+        { word: 'Fish', img: 'https://img.icons8.com/color/192/fish.png' },
+        { word: 'Grapes', img: 'https://img.icons8.com/color/192/grapes.png' },
+        { word: 'Hat', img: 'https://img.icons8.com/color/192/hat.png' },
+        { word: 'Ice', img: 'https://img.icons8.com/color/192/ice-cream.png' },
+        { word: 'Juice', img: 'https://img.icons8.com/color/192/orange-juice.png' },
+        { word: 'Kite', img: 'https://img.icons8.com/color/192/kite.png' },
+        { word: 'Lion', img: 'https://img.icons8.com/color/192/lion.png' },
+        { word: 'Monkey', img: 'https://img.icons8.com/color/192/monkey.png' },
+        { word: 'Nest', img: 'https://img.icons8.com/color/192/nest.png' },
+        { word: 'Orange', img: 'https://img.icons8.com/color/192/orange.png' },
+        { word: 'Pig', img: 'https://img.icons8.com/color/192/pig.png' },
+        { word: 'Queen', img: 'https://img.icons8.com/color/192/queen-king.png' },
+        { word: 'Rabbit', img: 'https://img.icons8.com/color/192/rabbit.png' },
+        { word: 'Sun', img: 'https://img.icons8.com/color/192/sun.png' },
+        { word: 'Tiger', img: 'https://img.icons8.com/color/192/tiger.png' },
+        { word: 'Umbrella', img: 'https://img.icons8.com/color/192/umbrella.png' },
+        { word: 'Violin', img: 'https://img.icons8.com/color/192/violin.png' },
+        { word: 'Whale', img: 'https://img.icons8.com/color/192/whale.png' },
+        { word: 'Xylophone', img: 'https://img.icons8.com/color/192/xylophone.png' },
+        { word: 'Yacht', img: 'https://img.icons8.com/color/192/yacht.png' },
+        { word: 'Zebra', img: 'https://img.icons8.com/color/192/zebra.png' },
+    ];
     // Index of the current letter in the alphabet array
     const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
     // Message displayed to the user (e.g., hints or encouragement)
@@ -91,8 +120,12 @@ const App = () => {
     // New useEffect Hook to play the pronunciation of the current letter when it changes
     useEffect(() => {
         if (!gameCompleted && currentLetterIndex < alphabet.length) {
-            // Ensure the pronunciation is played when a new letter is displayed
+            // 先发音字母
             speakCurrentLetter(alphabet[currentLetterIndex]);
+            // 再发音单词，延迟 800ms 以避免重叠
+            setTimeout(() => {
+                speakText(letterData[currentLetterIndex].word, 'en-US', 0.9, 1);
+            }, 800);
         }
     }, [currentLetterIndex, gameCompleted]); // Dependencies: currentLetterIndex and gameCompleted
 
@@ -145,14 +178,24 @@ const App = () => {
                         </button>
                     </div>
                 ) : (
-                    // If the game is not completed, display the current letter and message
+                    // If the game is not completed, display the current letter, word, and image
                     <>
-                        {/* Adjusted font size using inline style with min(vw, vh) for maximum size without overflow */}
                         <h1 style={{ fontSize: 'min(70vw, 70vh)' }} className="font-extrabold text-blue-700 leading-none">
-                            {alphabet[currentLetterIndex]} {/* Display current letter */}
+                            {alphabet[currentLetterIndex]}
                         </h1>
-                        <p className="text-xl md:text-2xl text-gray-700 min-h-[2.5rem] mt-4">
-                            {message} {/* Display message */}
+                        {/* Show image and word for the current letter */}
+                        <div className="flex flex-col items-center mt-4 mb-2">
+                            <img
+                                src={letterData[currentLetterIndex].img}
+                                alt={letterData[currentLetterIndex].word}
+                                style={{ width: '120px', height: '120px', objectFit: 'contain' }}
+                            />
+                            <span className="text-3xl font-bold text-gray-800 mt-2 select-none">
+                                {letterData[currentLetterIndex].word}
+                            </span>
+                        </div>
+                        <p className="text-xl md:text-2xl text-gray-700 min-h-[2.5rem] mt-2">
+                            {message}
                         </p>
                     </>
                 )}
